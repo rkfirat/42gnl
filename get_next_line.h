@@ -6,7 +6,7 @@
 /*   By: rfirat <rfirat@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 21:07:44 by rfirat            #+#    #+#             */
-/*   Updated: 2025/11/18 21:10:28 by rfirat           ###   ########.fr       */
+/*   Updated: 2025/11/19 00:04:30 by rfirat           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,13 @@ typedef struct s_merge
 	char	*joined;
 	size_t	idx;
 }			t_merge;
+
+typedef struct s_consume
+{
+	char	*line;
+	char	*rest;
+	int		cut;
+	size_t	len;
+}			t_consume;
+
 #endif

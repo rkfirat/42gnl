@@ -6,7 +6,7 @@
 /*   By: rfirat <rfirat@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 21:07:36 by rfirat            #+#    #+#             */
-/*   Updated: 2025/11/18 21:10:02 by rfirat           ###   ########.fr       */
+/*   Updated: 2025/11/19 00:05:46 by rfirat           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,26 @@
 
 static char	*gnl_consume(char **storage)
 {
-	char	*line;
-	char	*rest;
-	int		cut;
-	size_t	len;
+	t_consume consume;	
 
 	if (*storage == NULL || **storage == '\0')
 		return (NULL);
-	cut = gnl_nl_index(*storage);
-	len = gnl_len(*storage);
-	if (cut < 0)
+	consume.cut = gnl_nl_index(*storage);
+	consume.len = gnl_len(*storage);
+	if (consume.cut < 0)
 	{
-		line = gnl_slice(*storage, 0, len);
-		rest = NULL;
+		consume.line = gnl_slice(*storage, 0, consume.len);
+		consume.rest = NULL;
 	}
 	else
 	{
-		line = gnl_slice(*storage, 0, (size_t)cut + 1);
-		rest = gnl_slice(*storage, (size_t)cut + 1, len - (size_t)cut - 1);
+		consume.line = gnl_slice(*storage, 0, (size_t)consume.cut + 1);
+		consume.rest = gnl_slice(*storage, (size_t)consume.cut + 1,
+			consume.len - (size_t)consume.cut - 1);
 	}
 	free(*storage);
-	*storage = rest;
-	return (line);
+	*storage = consume.rest;
+	return (consume.line);
 }
 
 static int	gnl_need_more(const char *storage)
@@ -76,6 +74,8 @@ char	*get_next_line(int fd)
 	static char	*storage;
 	char		*line;
 
+	if (fd == -1)
+		free(storage);
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	storage = gnl_read_fd(fd, storage);
